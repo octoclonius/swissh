@@ -1,2 +1,2 @@
-# Secure Web Interface SSH (SWISSH)
+# Web Interface SSH (WISSH)
 
