@@ -1,0 +1,9 @@
+services:
+  wissh:
+    build:
+      context: .
+      target: prod # dev, test, prod
+    image: wissh-image
+    ports:
+      - "80:8080"
+    container_name: wissh
