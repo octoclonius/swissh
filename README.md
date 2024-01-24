@@ -15,6 +15,6 @@ You can use the `docker` and `docker compose` commands to run WISSH.
 `docker rm wissh`
 ### `docker compose` Commands
 #### Build and Run
-`docker compose up -d`
+`docker compose up --build -d`
 #### Stop and Remove
 `docker compose down`
