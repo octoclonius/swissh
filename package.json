@@ -2,9 +2,9 @@
   "name": "wissh",
   "version": "0.0.1",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "dev": "nodemon -i -L index.js",
+    "dev": "nodemon -i -L app.js",
     "test": "jest"
   },
   "keywords": [],

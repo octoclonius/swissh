@@ -1,5 +1,6 @@
 const http = require('node:http');
 const express = require('express');
+const path = require('path');
 const { WebSocketServer } = require('ws');
 const xterm = require('@xterm/xterm');
 const { WebglAddon } = require('@xterm/addon-webgl');
@@ -8,10 +9,10 @@ const { getShell } = require('./getShell');
 
 /* Handles routes */
 const app = express();
-app.use(express.static('.'));
+app.use(express.static(path.join(__dirname, '.')));
 
 app.get('/', (req, res) => {
-    res.sendFile('index.html');
+    res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 /* Handles terminal communication */
@@ -64,6 +65,7 @@ server.on('upgrade', (request, socket, head) => {
 });
 
 const port = 8080;
-server.listen(port, () => {
-    console.log(`Listening on port ${port}`);
+const host = '0.0.0.0';
+server.listen(port, host, () => {
+    console.log(`Server is running on http://${host}:${port}`);
 });
