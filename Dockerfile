@@ -9,17 +9,14 @@ ARG NODE_VERSION=20
 # Use Node.js version 20 based on Alpine Linux (lightweight, secure)
 FROM node:${NODE_VERSION}-alpine as base
 
-# Install OpenSSH and Bash
-RUN apk --update --no-cache add openssh bash
+# Install OpenSSH and Bash, and packages for node-pty
+RUN apk add --update --no-cache openssh bash make python3 g++
 
 # Set working directory.
 WORKDIR /usr/src/app
 
 # Expose the port that the application listens on.
 EXPOSE 80
-
-# Install python for node-pty
-RUN apk add --no-cache python3 make g++
 
 
 ########################################
