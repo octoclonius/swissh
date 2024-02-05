@@ -6,4 +6,4 @@ services:
     image: wissh-image
     container_name: wissh
     ports:
-      - "<YOUR PUBLIC IP ADDRESS>:80:8080"
+      - "127.0.0.1:80:8080"

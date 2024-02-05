@@ -13,28 +13,56 @@
     <script src="node_modules/@xterm/xterm/lib/xterm.js"></script>
     <script src="node_modules/@xterm/addon-attach/lib/addon-attach.js"></script>
     <script src="node_modules/@xterm/addon-fit/lib/addon-fit.js"></script>
-    <!--<script src="node_modules/@xterm/addon-webgl/lib/addon-webgl.js"></script>-->
+    <script src="node_modules/@xterm/addon-webgl/lib/addon-webgl.js"></script>
 </head>
 <body>
     <div id="terminal"></div>
     <script>
+        /* Terminal */
         const terminal = new Terminal();
-        //terminal.loadAddon(new WebglAddon.WebglAddon());
+        terminal.open(document.getElementById('terminal'));
 
+        /* WebGL */
+        const xtermWebglAddon = new WebglAddon.WebglAddon();
+        try {
+            xtermWebglAddon.onContextLoss(e => {
+                xtermWebglAddon.dispose();
+            });
+            terminal.loadAddon(xtermWebglAddon);
+        } catch (e) {
+            console.warn('Failed to load xterm WebGL addon', e);
+            xtermWebglAddon.dispose();
+        }
+
+        /* Fit */
+        const xtermFitAddon = new FitAddon.FitAddon();
+        try {
+            terminal.loadAddon(xtermFitAddon);
+        } catch (e) {
+            console.error('Failed to load xterm fit addon', e);
+            xtermFitAddon.dispose();
+        }
+
+        /* WebSocket */
         const ws = new WebSocket(`ws://${window.location.host}/xterm`);
-        terminal.loadAddon(new AttachAddon.AttachAddon(ws));
-
-        const fitAddon = new FitAddon.FitAddon();
-        terminal.loadAddon(fitAddon);
-
         ws.onopen = (event) => {
-            terminal.open(document.getElementById('terminal'));
-            fitAddon.fit();
+            xtermFitAddon.fit();
             ws.send(JSON.stringify({ resize: { cols: terminal.cols, rows: terminal.rows } }));
         };
 
+        /* Attach */
+        const xtermAttachAddon = new AttachAddon.AttachAddon(ws);
+        try {
+            terminal.loadAddon(xtermAttachAddon);
+        } catch (e) {
+            console.error('Failed to load xterm attach addon', e);
+            xtermAttachAddon.dispose();
+            ws.close();
+        }
+
+        /* Resize handler */
         window.addEventListener('resize', () => {
-            fitAddon.fit();
+            xtermFitAddon.fit();
             /* TODO: Come up with a more robust solution for communicating resize events */
             ws.send(JSON.stringify({ resize: { cols: terminal.cols, rows: terminal.rows } }));
         });
