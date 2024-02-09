@@ -10,13 +10,17 @@ ARG NODE_VERSION=20
 FROM node:${NODE_VERSION}-alpine as base
 
 # Install OpenSSH, Bash, and packages for node-pty
-RUN apk add --update --no-cache openssh bash make python3 g++
+RUN apk add --update --no-cache openssh bash make python3 g++ openssl
+
+# Generate SSL certificate
+RUN openssl req -newkey rsa:4096 -noenc -keyout /etc/ssl/private/key.pem -x509 -days 365 -out /etc/ssl/certs/certificate.pem -subj "/CN=wissh" && \
+    chmod 444 /etc/ssl/private/key.pem
+
+# Expose the port that the application listens on.
+EXPOSE 443
 
 # Set working directory.
 WORKDIR /usr/src/app
-
-# Expose the port that the application listens on.
-EXPOSE 80
 
 
 ########################################

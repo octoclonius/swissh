@@ -4,7 +4,7 @@
   "description": "",
   "main": "app.js",
   "scripts": {
-    "dev": "nodemon -i -L app.js",
+    "dev": "nodemon --inspect -i spec/ app.js",
     "test": "jest"
   },
   "keywords": [],

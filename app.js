@@ -1,10 +1,14 @@
-const http = require('node:http');
+let https;
+try {
+    https = require('node:https');
+} catch (err) {
+    console.error('https support is disabled!');
+}
+const fs = require('node:fs');
 const express = require('express');
+const pty = require('node-pty');
 const path = require('path');
 const { WebSocketServer } = require('ws');
-const xterm = require('@xterm/xterm');
-const { WebglAddon } = require('@xterm/addon-webgl');
-const pty = require('node-pty');
 const { getShell } = require('./getShell');
 
 /* Handles routes */
@@ -18,15 +22,10 @@ app.get('/', (req, res) => {
 /* Handles terminal communication */
 const wsServer = new WebSocketServer({ noServer: true });
 wsServer.on('connection', (ws, req) => {
-    if (req.url === '/xterm') {
-        const terminal = new xterm.Terminal();
-        terminal.loadAddon(new WebglAddon());
-
+    if (req.url === '/wissh') {
         const shell = getShell();
         const ptyProcess = pty.spawn(shell, [], {
-            name: 'xterm-color',
-            cols: terminal.cols,
-            rows: terminal.rows,
+            name: 'xterm-256color',
             cwd: process.env.HOME,
             env: process.env
         });
@@ -51,21 +50,21 @@ wsServer.on('connection', (ws, req) => {
         });
 
         ws.on('close', () => {
-            terminal.dispose();
+            ptyProcess.kill();
         });
     }
 });
 
 /* Handles HTTP requests and links `app` with `wsServer` */
-const server = http.createServer(app);
+const server = https.createServer({
+    key: fs.readFileSync('/etc/ssl/private/key.pem'),
+    cert: fs.readFileSync('/etc/ssl/certs/certificate.pem')
+}, app);
+
 server.on('upgrade', (request, socket, head) => {
     wsServer.handleUpgrade(request, socket, head, (ws) => {
         wsServer.emit('connection', ws, request);
     });
 });
 
-const port = 8080;
-const host = '0.0.0.0';
-server.listen(port, host, () => {
-    console.log(`Server is running on http://${host}:${port}`);
-});
+server.listen(443);
