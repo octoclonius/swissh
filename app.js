@@ -20,8 +20,8 @@ app.get('/', (req, res) => {
 });
 
 /* Handles terminal communication */
-const wsServer = new WebSocketServer({ noServer: true });
-wsServer.on('connection', (ws, req) => {
+const wss = new WebSocketServer({ noServer: true });
+wss.on('connection', (ws, req) => {
     if (req.url === '/wissh') {
         const shell = getShell();
         const ptyProcess = pty.spawn(shell, [], {
@@ -57,13 +57,13 @@ wsServer.on('connection', (ws, req) => {
 
 /* Handles HTTP requests and links `app` with `wsServer` */
 const server = https.createServer({
-    key: fs.readFileSync('/etc/ssl/private/key.pem'),
-    cert: fs.readFileSync('/etc/ssl/certs/certificate.pem')
+    cert: fs.readFileSync('/etc/ssl/certs/certificate.pem'),
+    key: fs.readFileSync('/etc/ssl/private/key.pem')
 }, app);
 
 server.on('upgrade', (request, socket, head) => {
-    wsServer.handleUpgrade(request, socket, head, (ws) => {
-        wsServer.emit('connection', ws, request);
+    wss.handleUpgrade(request, socket, head, (ws) => {
+        wss.emit('connection', ws, request);
     });
 });
 

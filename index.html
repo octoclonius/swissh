@@ -44,7 +44,7 @@
         }
 
         /* WebSocket */
-        const ws = new WebSocket(`ws://${window.location.host}/wissh`);
+        const ws = new WebSocket(`wss://${window.location.host}/wissh`);
         ws.onopen = (event) => {
             xtermFitAddon.fit();
             ws.send(JSON.stringify({ resize: { cols: terminal.cols, rows: terminal.rows } }));
