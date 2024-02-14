@@ -5,20 +5,16 @@ try {
     console.error("https support is disabled!");
 }
 const fs = require("node:fs");
+const path = require("node:path");
 const express = require("express");
 const pty = require("node-pty");
-const path = require("path");
 const { WebSocketServer } = require("ws");
 const { getShell } = require("./getShell");
 
 /* Handles routes */
 const app = express();
-app.use(express.static(path.join(__dirname, "public")));
-app.use("/scripts", express.static(path.join(__dirname, "node_modules")));
-
-app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname, "index.html"));
-});
+app.use(express.static(path.join(__dirname, "..", "public")));
+app.use("/lib", express.static(path.join(__dirname, "node_modules")));
 
 /* Handles terminal communication */
 const wss = new WebSocketServer({ noServer: true });

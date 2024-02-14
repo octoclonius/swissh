@@ -2,7 +2,7 @@ services:
   wissh:
     build:
       context: .
-      target: prod # dev, test, prod
+      target: prod # dev, prod
     image: wissh-image
     container_name: wissh
     ports:
