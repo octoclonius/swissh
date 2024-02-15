@@ -1,9 +1,16 @@
 services:
-  wissh:
+  backend:
     build:
-      context: .
-      target: dev # dev, prod
-    image: wissh-image
-    container_name: wissh
+      context: backend
+      target: prod # dev, prod
+    container_name: backend
     ports:
       - "127.0.0.1:8080:443"
+
+  frontend:
+    build:
+      context: frontend
+      target: prod
+    container_name: frontend
+    ports:
+      - "127.0.0.1:8081:8080"
