@@ -1,9 +1,9 @@
 name: ci
 
 on:
-  push:
-    branches:
-      - main
+  pull_request:
+    types:
+      - opened
 
 jobs:
   build:
@@ -25,14 +25,14 @@ jobs:
         name: Build and test
         uses: docker/build-push-action@v5
         with:
-          context: .
+          context: backend
           target: test
           load: true
       -
         name: Build and push
         uses: docker/build-push-action@v5
         with:
-          context: .
+          context: backend
           target: prod
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/${{ github.event.repository.name }}:latest

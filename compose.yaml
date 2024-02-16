@@ -6,3 +6,11 @@ services:
     container_name: backend
     ports:
       - "127.0.0.1:8080:443"
+
+  frontend:
+    build:
+      context: frontend
+      target: dev # dev, prod
+    container_name: frontend
+    ports:
+      - "127.0.0.1:3000:3000"
