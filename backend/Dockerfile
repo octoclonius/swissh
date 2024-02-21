@@ -20,7 +20,7 @@ RUN apk add --update --no-cache openssh bash make python3 g++ openssl
 EXPOSE 443
 
 # Set working directory.
-WORKDIR /usr/src/wissh-backend
+WORKDIR /usr/src/backend
 
 
 ########################################
@@ -61,6 +61,7 @@ FROM base as prod
 ENV NODE_ENV production
 
 # Can omit dev deps for prod
+COPY package*.json .
 RUN --mount=type=bind,source=package.json,target=package.json \
     --mount=type=bind,source=package-lock.json,target=package-lock.json \
     --mount=type=cache,target=/root/.npm \
@@ -78,6 +79,7 @@ CMD node src/index.js
 FROM base as test
 ENV NODE_ENV test
 
+COPY package*.json .
 RUN --mount=type=bind,source=package.json,target=package.json \
     --mount=type=bind,source=package-lock.json,target=package-lock.json \
     --mount=type=cache,target=/root/.npm \
