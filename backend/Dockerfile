@@ -22,14 +22,6 @@ EXPOSE 443
 # Set working directory.
 WORKDIR /usr/src/wissh-backend
 
-# Copy public and src files to container.
-COPY public public
-COPY src src
-COPY package*.json .
-
-# Transpile JS to JSX
-#RUN npx babel App.js
-
 
 ########################################
 # DEVELOPMENT BUILD
@@ -45,13 +37,15 @@ EXPOSE 9229
 # Leverage a cache mount to /root/.npm to speed up subsequent builds.
 # Leverage a bind mounts to package.json and package-lock.json to avoid having to copy them into
 # into this layer.
+COPY package*.json .
 RUN --mount=type=bind,source=package.json,target=package.json \
     --mount=type=bind,source=package-lock.json,target=package-lock.json \
     --mount=type=cache,target=/root/.npm \
     npm ci
 
-# Copy the fixed xterm addon files.
-COPY node_modules/@xterm node_modules/@xterm
+# Copy public and src files to container.
+COPY public public
+COPY src src
 
 # Run the application as a non-root user.
 # https://github.com/nodejs/docker-node/blob/main/docs/BestPractices.md#non-root-user
@@ -72,7 +66,8 @@ RUN --mount=type=bind,source=package.json,target=package.json \
     --mount=type=cache,target=/root/.npm \
     npm ci --omit=dev
 
-COPY node_modules/@xterm node_modules/@xterm
+COPY public public
+COPY src src
 
 USER node
 CMD node src/index.js
@@ -88,7 +83,8 @@ RUN --mount=type=bind,source=package.json,target=package.json \
     --mount=type=cache,target=/root/.npm \
     npm ci
 
-COPY node_modules/@xterm node_modules/@xterm
+COPY public public
+COPY src src
 COPY spec spec
 
 USER node

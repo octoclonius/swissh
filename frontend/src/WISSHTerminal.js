@@ -1,16 +1,17 @@
 import React, { useEffect } from 'react';
 import { Terminal } from '@xterm/xterm';
 import { FitAddon } from '@xterm/addon-fit';
-import { WebglAddon } from '@xterm/addon-webgl';
+//import { WebglAddon } from '@xterm/addon-webgl';
 import { AttachAddon } from '@xterm/addon-attach';
-import './xterm.css';
+import '@xterm/xterm/css/xterm.css'
 
 function WISSHTerminal() {
   useEffect(() => {
     const terminal = new Terminal();
     terminal.open(document.getElementById("terminal"));
 
-    const xtermWebglAddon = new WebglAddon();
+    /* TODO: Fix/block xterm.js WebGL addon on mobile */
+    /*const xtermWebglAddon = new WebglAddon();
     try {
       xtermWebglAddon.onContextLoss(() => {
         xtermWebglAddon.dispose();
@@ -19,7 +20,7 @@ function WISSHTerminal() {
     } catch (err) {
       console.warn("Failed to load xterm WebGL addon", err);
       xtermWebglAddon.dispose();
-    }
+    }*/
 
     const xtermFitAddon = new FitAddon();
     try {
@@ -29,7 +30,7 @@ function WISSHTerminal() {
       xtermFitAddon.dispose();
     }
 
-    const ws = new WebSocket('wss://127.0.0.1:8000/wissh');
+    const ws = new WebSocket(`wss://${window.location.hostname}:8000/wissh`);
     ws.onopen = () => {
       xtermFitAddon.fit();
       ws.send(JSON.stringify({ resize: { cols: terminal.cols, rows: terminal.rows } }));
@@ -53,7 +54,7 @@ function WISSHTerminal() {
 
     return () => {
       terminal.dispose();
-      xtermWebglAddon.dispose();
+      //xtermWebglAddon.dispose();
       xtermFitAddon.dispose();
       xtermAttachAddon.dispose();
       ws.close();
