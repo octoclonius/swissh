@@ -13,22 +13,14 @@ FROM node:${NODE_VERSION}-alpine as base
 RUN apk add --update --no-cache openssh bash make python3 g++ openssl
 
 # Generate SSL certificate.
-RUN openssl req -newkey rsa:4096 -noenc -keyout /etc/ssl/private/key.pem -x509 -days 365 -out /etc/ssl/certs/certificate.pem -subj "/CN=wissh" && \
-    chmod 444 /etc/ssl/private/key.pem
+#RUN openssl req -newkey rsa:4096 -noenc -keyout /etc/ssl/private/key.pem -x509 -days 365 -out /etc/ssl/certs/certificate.pem -subj "/CN=wissh" && \
+#    chmod 444 /etc/ssl/private/key.pem
 
 # Expose the port that the application listens on.
 EXPOSE 443
 
 # Set working directory.
-WORKDIR /usr/src/wissh-backend
-
-# Copy public and src files to container.
-COPY public public
-COPY src src
-COPY package*.json .
-
-# Transpile JS to JSX
-#RUN npx babel App.js
+WORKDIR /usr/src/backend
 
 
 ########################################
@@ -45,13 +37,15 @@ EXPOSE 9229
 # Leverage a cache mount to /root/.npm to speed up subsequent builds.
 # Leverage a bind mounts to package.json and package-lock.json to avoid having to copy them into
 # into this layer.
+COPY package*.json .
 RUN --mount=type=bind,source=package.json,target=package.json \
     --mount=type=bind,source=package-lock.json,target=package-lock.json \
     --mount=type=cache,target=/root/.npm \
     npm ci
 
-# Copy the fixed xterm addon files.
-COPY node_modules/@xterm node_modules/@xterm
+# Copy public and src files to container.
+COPY public public
+COPY src src
 
 # Run the application as a non-root user.
 # https://github.com/nodejs/docker-node/blob/main/docs/BestPractices.md#non-root-user
@@ -67,12 +61,14 @@ FROM base as prod
 ENV NODE_ENV production
 
 # Can omit dev deps for prod
+COPY package*.json .
 RUN --mount=type=bind,source=package.json,target=package.json \
     --mount=type=bind,source=package-lock.json,target=package-lock.json \
     --mount=type=cache,target=/root/.npm \
     npm ci --omit=dev
 
-COPY node_modules/@xterm node_modules/@xterm
+COPY public public
+COPY src src
 
 USER node
 CMD node src/index.js
@@ -83,12 +79,14 @@ CMD node src/index.js
 FROM base as test
 ENV NODE_ENV test
 
+COPY package*.json .
 RUN --mount=type=bind,source=package.json,target=package.json \
     --mount=type=bind,source=package-lock.json,target=package-lock.json \
     --mount=type=cache,target=/root/.npm \
     npm ci
 
-COPY node_modules/@xterm node_modules/@xterm
+COPY public public
+COPY src src
 COPY spec spec
 
 USER node
