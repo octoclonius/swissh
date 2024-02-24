@@ -12,15 +12,8 @@ FROM node:${NODE_VERSION}-alpine as base
 # Install OpenSSH, Bash, and packages for node-pty.
 RUN apk add --update --no-cache openssh bash make python3 g++ openssl
 
-# Generate SSL certificate.
-#RUN openssl req -newkey rsa:4096 -noenc -keyout /etc/ssl/private/key.pem -x509 -days 365 -out /etc/ssl/certs/certificate.pem -subj "/CN=wissh" && \
-#    chmod 444 /etc/ssl/private/key.pem
-
-# Expose the port that the application listens on.
-EXPOSE 443
-
 # Set working directory.
-WORKDIR /usr/src/backend
+WORKDIR /usr/src/app
 
 
 ########################################
@@ -43,8 +36,7 @@ RUN --mount=type=bind,source=package.json,target=package.json \
     --mount=type=cache,target=/root/.npm \
     npm ci
 
-# Copy public and src files to container.
-COPY public public
+# Copy src files to container.
 COPY src src
 
 # Run the application as a non-root user.
@@ -67,7 +59,6 @@ RUN --mount=type=bind,source=package.json,target=package.json \
     --mount=type=cache,target=/root/.npm \
     npm ci --omit=dev
 
-COPY public public
 COPY src src
 
 USER node
@@ -85,7 +76,6 @@ RUN --mount=type=bind,source=package.json,target=package.json \
     --mount=type=cache,target=/root/.npm \
     npm ci
 
-COPY public public
 COPY src src
 COPY spec spec
 

@@ -5,10 +5,10 @@ services:
       target: prod # dev, prod
     container_name: backend
     ports:
-      - "8000:443"
+      - "127.0.0.1:8000:8000"
     volumes:
-      - ./ssl/certs:/etc/ssl/certs
-      - ./ssl/private:/etc/ssl/private
+      - ./ssl/certs:/usr/src/ssl/certs
+      - ./ssl/private:/usr/src/ssl/private
 
   frontend:
     build:
@@ -18,5 +18,5 @@ services:
     ports:
       - "3000:3000"
     volumes:
-      - ./ssl/certs:/etc/ssl/certs
-      - ./ssl/private:/etc/ssl/private
+      - ./ssl/certs:/usr/src/ssl/certs
+      - ./ssl/private:/usr/src/ssl/private

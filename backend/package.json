@@ -1,15 +1,12 @@
 {
   "name": "wissh",
-  "version": "1.0.0",
-  "description": "",
+  "version": "0.1.0",
+  "private": true,
   "main": "src/index.js",
   "scripts": {
     "dev": "nodemon --inspect --ignore spec/ src/index.js",
     "test": "jest"
   },
-  "keywords": [],
-  "author": "wissh-nd",
-  "license": "MIT",
   "dependencies": {
     "@xterm/addon-attach": "^0.10.0-beta.1",
     "@xterm/addon-fit": "^0.9.0-beta.1",

@@ -5,16 +5,9 @@ try {
     console.error("https support is disabled!");
 }
 const fs = require("node:fs");
-const path = require("node:path");
-const express = require("express");
 const pty = require("node-pty");
 const { WebSocketServer } = require("ws");
 const { getShell } = require("./getShell");
-
-/* Handles routes */
-//const app = express();
-//app.use(express.static(path.join(__dirname, "..", "public")));
-//app.use("/lib", express.static(path.join(__dirname, "..", "node_modules")));
 
 /* Handles terminal communication */
 const wss = new WebSocketServer({ noServer: true });
@@ -53,15 +46,10 @@ wss.on("connection", (ws, req) => {
 });
 
 /* Handles HTTP requests and links `app` with `wss` */
-/*const server = https.createServer({
-    cert: fs.readFileSync("/etc/ssl/certs/certificate.pem"),
-    key: fs.readFileSync("/etc/ssl/private/key.pem")
-}, app);*/
 const server = https.createServer({
-    cert: fs.readFileSync("/etc/ssl/certs/certificate.pem"),
-    key: fs.readFileSync("/etc/ssl/private/key.pem")
+    cert: fs.readFileSync("../ssl/certs/certificate.pem"),
+    key: fs.readFileSync("../ssl/private/key.pem")
 });
-//const server = https.createServer();
 
 server.on("upgrade", (request, socket, head) => {
     wss.handleUpgrade(request, socket, head, (ws) => {
@@ -69,4 +57,4 @@ server.on("upgrade", (request, socket, head) => {
     });
 });
 
-server.listen(443);
+server.listen(8000);

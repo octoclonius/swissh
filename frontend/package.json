@@ -16,8 +16,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "SSL_CRT_FILE=/etc/ssl/certs/certificate.pem SSL_KEY_FILE=/etc/ssl/private/key.pem HTTPS=true react-scripts start",
-    "build": "SSL_CRT_FILE=/etc/ssl/certs/certificate.pem SSL_KEY_FILE=/etc/ssl/private/key.pem HTTPS=true react-scripts build",
+    "start": "SSL_CRT_FILE=../ssl/certs/certificate.pem SSL_KEY_FILE=../ssl/private/key.pem HTTPS=true react-scripts start",
+    "build": "SSL_CRT_FILE=../ssl/certs/certificate.pem SSL_KEY_FILE=../ssl/private/key.pem HTTPS=true react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

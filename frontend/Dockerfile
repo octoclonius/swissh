@@ -3,7 +3,7 @@
 ARG NODE_VERSION=20
 FROM node:${NODE_VERSION}-alpine as base
 
-WORKDIR /usr/src/frontend
+WORKDIR /usr/src/app
 
 FROM base as dev
 ENV NODE_ENV development
@@ -29,7 +29,7 @@ COPY src src
 RUN npm run build
 RUN npm install -g serve
 USER node
-CMD serve -s build --ssl-cert "/etc/ssl/certs/certificate.pem" --ssl-key "/etc/ssl/private/key.pem"
+CMD serve -s build --ssl-cert "/usr/src/ssl/certs/certificate.pem" --ssl-key "/usr/src/ssl/private/key.pem"
 
 FROM base as test
 ENV NODE_ENV test
