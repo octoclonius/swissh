@@ -5,7 +5,7 @@ services:
       target: prod # dev, prod
     container_name: backend
     ports:
-      - "127.0.0.1:8000:8000"
+      - "8000:8000"
     volumes:
       - ./ssl/certs:/usr/src/ssl/certs
       - ./ssl/private:/usr/src/ssl/private
