@@ -30,7 +30,7 @@ function WISSHTerminal() {
       xtermFitAddon.dispose();
     }
 
-    const ws = new WebSocket('wss://127.0.0.1:8000/wissh');
+    const ws = new WebSocket(`wss://${window.location.hostname}:8000/wissh`);
     ws.onopen = () => {
       xtermFitAddon.fit();
       ws.send(JSON.stringify({ resize: { cols: terminal.cols, rows: terminal.rows } }));
