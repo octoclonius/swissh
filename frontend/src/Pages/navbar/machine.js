@@ -1,12 +1,9 @@
 import React from 'react';
-const Machine = () =>{
+
+const Machine = () => {
   return (
-    <div>
-      <h3>Dogs</h3>
-      <div>
-        
-      </div>
-    </div>
+    <h3>Dogs</h3>
   );
 }
+
 export default Machine;

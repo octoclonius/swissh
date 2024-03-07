@@ -1,9 +1,9 @@
-import React, { useEffect } from 'react';
-import { Terminal } from '@xterm/xterm';
-import { FitAddon } from '@xterm/addon-fit';
+import React, { useEffect } from "react";
+import { Terminal } from "@xterm/xterm";
+import { FitAddon } from "@xterm/addon-fit";
 //import { WebglAddon } from '@xterm/addon-webgl';
-import { AttachAddon } from '@xterm/addon-attach';
-import '@xterm/xterm/css/xterm.css'
+import { AttachAddon } from "@xterm/addon-attach";
+import "@xterm/xterm/css/xterm.css";
 
 function WISSHTerminal() {
   useEffect(() => {
@@ -33,7 +33,9 @@ function WISSHTerminal() {
     const ws = new WebSocket(`wss://${window.location.hostname}:8000/wissh`);
     ws.onopen = () => {
       xtermFitAddon.fit();
-      ws.send(JSON.stringify({ resize: { cols: terminal.cols, rows: terminal.rows } }));
+      ws.send(
+        JSON.stringify({ resize: { cols: terminal.cols, rows: terminal.rows } })
+      );
     };
 
     const xtermAttachAddon = new AttachAddon(ws);
@@ -47,7 +49,9 @@ function WISSHTerminal() {
 
     const handleResize = () => {
       xtermFitAddon.fit();
-      ws.send(JSON.stringify({ resize: { cols: terminal.cols, rows: terminal.rows } }));
+      ws.send(
+        JSON.stringify({ resize: { cols: terminal.cols, rows: terminal.rows } })
+      );
     };
 
     window.addEventListener("resize", handleResize);
@@ -63,6 +67,6 @@ function WISSHTerminal() {
   }, []);
 
   return <div id="terminal" />;
-};
+}
 
 export default WISSHTerminal;
