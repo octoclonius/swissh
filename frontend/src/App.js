@@ -1,21 +1,23 @@
-import WISSHTerminal from "./WISSHTerminal";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Navbar from "./components/navbar/navbar";
-import Machine from "./Pages/navbar/machine";
-//import File from "./components/File/file"
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Navbar from './Components/Navbar/Navbar';
+import AddMachine from './Pages/AddMachine';
+import WISSHMain from './Components/WISSHMain/WISSHMain';
+import './App.css';
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
+    <div className='app'>
+
       <Router>
         <Routes>
-          <Route path="/" element={<Navbar />}>
-            <Route path="machine" element={<Machine />} />
-            <Route path="*" element={<></>} />
+          <Route path='/' element={<Navbar />}>
+            <Route path='add-machine' element={<AddMachine />} />
           </Route>
         </Routes>
       </Router>
-      <WISSHTerminal />
+
+      <WISSHMain />
+      
     </div>
   );
 }

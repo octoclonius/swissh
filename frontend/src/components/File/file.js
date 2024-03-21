@@ -1,12 +1,8 @@
-import React from "react";
-import fileImage from "./folderstruct.webp";
-import "./file.css";
+import React from 'react';
 
 const File = () => {
   return (
-    <div className="image">
-      <img src={fileImage} alt="fileImage" />
-    </div>
+    <img src='/folderstruct.webp' alt='files'/>
   );
 };
 

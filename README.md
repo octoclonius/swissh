@@ -38,39 +38,38 @@ You can also quit Docker Desktop to stop WISSH.
 To contribute, please follow the general outline presented by GitHub: <https://docs.github.com/en/get-started/exploring-projects-on-github/contributing-to-a-project>.
 
 ### Dependencies
-If you do not have Node.js, you can install it with [nvm](https://github.com/nvm-sh/nvm?tab=readme-ov-file#installing-and-updating) on macOS and Linux. On Windows, you can use [nvm-windows](https://github.com/coreybutler/nvm-windows?tab=readme-ov-file#overview). Then, run `nvm install 20`.
+If you do not have Node.js, you can install it with [nvm](https://github.com/nvm-sh/nvm?tab=readme-ov-file#installing-and-updating) on macOS and Linux. On Windows, you can use [nvm-windows](https://github.com/coreybutler/nvm-windows?tab=readme-ov-file#overview). Then, run `nvm install --lts` and `nvm use --lts`.
 
 ### Running Locally
 WISSH can also be built and run on your local machine for development.
 
-**WISSH is open to all users on your local network by default to make it accessible from other devices. If you run WISSH locally, make sure to change it to only be accessible from `localhost`, _otherwise you are exposing your computer's terminal to the entire network._ This is only an issue as WISSH is still in development and will be fixed.**
-
 #### Development Build
 To run the development build of WISSH:
 1. Navigate into the WISSH folder.
-1. Open `compose.yaml`. Under `services`, `frontend`, set `ports` to `"127.0.0.1:3000:3000"`.
+1. Open `compose.yaml`. Under `services`, `backend` and `frontend`, `build`, make sure `target` is set to `dev`.
 1. Navigate into the backend folder.
-1. Run `npm install`
+1. Run `npm install`.
 1. Run `npm run dev`.
 1. Navigate into the frontend folder.
-1. Run `npm install`
-1. Run `npm run start`
+1. Run `npm install`.
+1. Run `npm run start`.
 
 #### Production Build
 To run the production build of WISSH:
 1. Navigate into the WISSH folder.
-1. Open `compose.yaml`. Under `services`, `frontend`, set `ports` to `"127.0.0.1:3000:3000"`.
+1. Open `compose.yaml`. Under `services`, `backend` and `frontend`, `build`, make sure `target` is set to `prod`.
 1. Navigate into the backend folder.
-1. Run `npm install`
+1. Run `npm install`.
 1. Run `node src/index.js`.
 1. Navigate into the frontend folder.
-1. Run `npm install`
-1. Run `npm run build`
-1. Run `npm install -g serve`
-1. Run `serve -s build --ssl-cert "../ssl/certs/certificate.pem" --ssl-key "../ssl/private/key.pem"`
+1. Run `npm install`.
+1. Run `npm run build`.
+1. Run `npm install -g serve`.
+1. Run `serve -s build --ssl-cert "../ssl/certs/certificate.pem" --ssl-key "../ssl/private/key.pem"`.
 
 ### Running WISSH on Docker
 You can also use Docker to run WISSH for development.
 
 1. Navigate into the WISSH folder.
+1. Open `compose.yaml`. Under `services`, `backend` and `frontend`, `build`, make sure `target` is set to `dev`.
 1. Run `docker compose up -d --build` to start WISSH.

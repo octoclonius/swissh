@@ -4,10 +4,8 @@
 # If you need more help, visit the Dockerfile reference guide at
 # https://docs.docker.com/go/dockerfile-reference/
 
-ARG NODE_VERSION=20
-
-# Use Node.js version 20 based on Alpine Linux (lightweight, secure).
-FROM node:${NODE_VERSION}-alpine as base
+# Use Node.js version 21 based on Alpine Linux (lightweight, secure).
+FROM node:21-alpine as base
 
 # Install OpenSSH, Bash, and packages for node-pty.
 RUN apk add --update --no-cache openssh bash make python3 g++ openssl

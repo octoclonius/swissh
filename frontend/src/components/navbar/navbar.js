@@ -1,37 +1,26 @@
-import React from "react";
-import { Outlet, Link } from "react-router-dom";
-import "./navbar.css";
-import File from "../File/file";
-import star from "./star.png";
+import React from 'react';
+import { Outlet, Link } from 'react-router-dom';
+import './Navbar.css';
 
 const Navbar = () => {
   return (
-    <div className="outer-container">
-      <div className="flex-container1">
-        <nav>
-          <div className="inner-flex-container">
-            <div>
-              <img src={star} alt="starImage" className="star" />
-            </div>
-            <div>
-              <Link to="/machine" className="link">
-                Machine
-              </Link>
-              <hr className="line" />
-            </div>
-            <div>
-              <Link to="/" className="link">
-                Terminal
-              </Link>
-              <hr className="line" />
-            </div>
-          </div>
-          <Outlet />
-        </nav>
+    <div className='navbar'>
+
+      <div className='machine-list-outlet'>
+        <Outlet />
       </div>
-      <div className="flex-container2">
-        <File />
-      </div>
+
+      <nav>
+        <hr />
+        <Link to='/add-machine' className='nav-link'>
+          Add Machine
+        </Link>
+        <hr />
+        <Link to='/' className='home'>
+          <img src='/logo.png' alt='logoImage' className='logo' />
+        </Link>
+      </nav>
+      
     </div>
   );
 };

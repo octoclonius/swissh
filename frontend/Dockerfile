@@ -1,7 +1,6 @@
 # syntax=docker/dockerfile:1
 
-ARG NODE_VERSION=20
-FROM node:${NODE_VERSION}-alpine as base
+FROM node:21-alpine as base
 
 WORKDIR /usr/src/app
 
@@ -12,9 +11,11 @@ RUN --mount=type=bind,source=package.json,target=package.json \
     --mount=type=bind,source=package-lock.json,target=package-lock.json \
     --mount=type=cache,target=/root/.npm \
     npm ci
+RUN mkdir '/usr/src/app/node_modules/.cache' && \
+    chmod -R 777 node_modules/.cache
 COPY public public
 COPY src src
-#USER node
+USER node
 CMD npm run start
 
 FROM base as prod

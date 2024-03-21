@@ -1,0 +1,16 @@
+.wissh-main {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.file-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.wissh-term-container {
+    display: flex;
+    flex-direction: column;
+}
