@@ -16,7 +16,7 @@ RUN mkdir '/usr/src/app/node_modules/.cache' && \
 COPY public public
 COPY src src
 USER node
-CMD npm run start
+CMD npm run docker-start
 
 FROM base as prod
 ENV NODE_ENV production
