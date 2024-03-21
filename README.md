@@ -38,7 +38,7 @@ You can also quit Docker Desktop to stop WISSH.
 To contribute, please follow the general outline presented by GitHub: <https://docs.github.com/en/get-started/exploring-projects-on-github/contributing-to-a-project>.
 
 ### Dependencies
-If you do not have Node.js, you can install it with [nvm](https://github.com/nvm-sh/nvm?tab=readme-ov-file#installing-and-updating) on macOS and Linux. On Windows, you can use [nvm-windows](https://github.com/coreybutler/nvm-windows?tab=readme-ov-file#overview). Then, run `nvm install --lts` and `nvm use --lts`.
+If you do not have Node.js, you can install it with [nvm](https://github.com/nvm-sh/nvm?tab=readme-ov-file#installing-and-updating) on macOS and Linux. On Windows, you can use [nvm-windows](https://github.com/coreybutler/nvm-windows?tab=readme-ov-file#overview). Then, run `nvm install 21` and `nvm use 21`.
 
 ### Running Locally
 WISSH can also be built and run on your local machine for development.
