@@ -6,7 +6,7 @@ import { checkUser } from "./AuthService";
 const AuthModule = () => {
   const navigate = useNavigate();
 
-  // redirect already authenticated users back to home
+  // redirect already authenticated users back to home aka WISHMain.js
   useEffect(() => {
     if (checkUser()) {
       alert("You are already logged in");
