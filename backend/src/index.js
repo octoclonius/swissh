@@ -19,7 +19,6 @@ app.use(express.json());
 app.use(cors());
 
 app.post('/auth', (req, res) => {
-    console.log(req.body);
     const conn = new Client();
     conn.on('ready', () => {
         conn.sftp((err, sftp) => {
