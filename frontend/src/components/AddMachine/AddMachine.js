@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import FileList from '../FileList/FileList';
 import './AddMachine.css'
 
 const initialState = {
@@ -44,7 +45,8 @@ const AddMachine = () => {
       }
 
       const responseData = await response.json();
-      console.log(responseData);
+      localStorage.files = JSON.stringify(responseData);
+
     } catch (e) {
       setError(`${e}`);
     } finally {

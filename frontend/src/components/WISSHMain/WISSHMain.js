@@ -1,5 +1,5 @@
 import React from 'react';
-import File from '../File/File';
+import FileList from '../FileList/FileList';
 import WISSHTerminal from '../WISSHTerminal/WISSHTerminal';
 import './WISSHMain.css';
 
@@ -8,7 +8,7 @@ const WISSHMain = () => {
     <div className='wissh-main'>
 
       <div className='file-container'>
-        <File />
+        <FileList />
       </div>
 
       <div className='wissh-term-container'>
