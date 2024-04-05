@@ -3,9 +3,11 @@ import { Terminal } from '@xterm/xterm';
 import { FitAddon } from '@xterm/addon-fit';
 import { AttachAddon } from '@xterm/addon-attach';
 import '@xterm/xterm/css/xterm.css';
+import './WISSHTerminal.css';
 
 const WISSHTerminal = ({ termHeight }) => {
   const termRef = useRef(null);
+  const timeoutIDRef = useRef(null);
 
   useEffect(() => {
     const term = new Terminal();
@@ -19,15 +21,18 @@ const WISSHTerminal = ({ termHeight }) => {
     term.loadAddon(addonAttach);
 
     const handleResize = () => {
-      let timeoutID;
-      return () => {
-        clearTimeout(timeoutID);
-        timeoutID = setTimeout(() => {
-          term.height = termHeight;
-          addonFit.fit();
-          ws.send(JSON.stringify({ resize: { cols: term.cols, rows: term.rows } }));
-        }, 100);
-      };
+      clearTimeout(timeoutIDRef.current);
+      timeoutIDRef.current = setTimeout(() => {
+        try {
+          const cellHeight = term._core._renderService.dimensions.css.cell.height;
+          const termRows = Math.max(0, Math.floor(termHeight / cellHeight));
+          term._core._renderService.clear();
+          term.resize(term.cols, termRows);
+          ws.send(JSON.stringify({ resize: { cols: term.cols, rows: termRows } }));
+        } catch (e) {
+          console.log(e);
+        }
+      }, 500);
     };
 
     ws.onopen = () => {
@@ -44,7 +49,7 @@ const WISSHTerminal = ({ termHeight }) => {
     };
   }, [termHeight]);
 
-  return <div ref={termRef} className='wissh-term'/>;
+  return <div ref={termRef} className='wissh-term' />;
 }
 
 export default WISSHTerminal;

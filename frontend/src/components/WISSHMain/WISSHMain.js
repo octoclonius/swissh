@@ -25,13 +25,13 @@ const WISSHMain = () => {
         width={Infinity}
         height={height}
         minConstraints={[Infinity, 10]}
-        handle={(h, ref) => <span className={`resize-handle resize-handle-${h}`} ref={ref} />}
+        handle={(_, ref) => <span className='resize-handle' ref={ref} />}
         resizeHandles={['n']}
         onResize={handleResize}
         axis='y'
       >
         <WISSHTerminal
-          height={height}
+          termHeight={height}
         />
       </ResizableBox>
       
