@@ -29,7 +29,8 @@ We recommend using Docker to run WISSH.
 ### Running WISSH
 You can use the [`docker compose`](https://docs.docker.com/compose/reference/) command to start and stop WISSH.
 1. Navigate into the WISSH folder.
-1. Run `docker compose up -d` to start WISSH.
+1. Open `compose.yaml`. Under `services`, `backend` and `frontend`, `build`, make sure `target` is set to `prod`.
+1. Run `docker compose up --build -d` to start WISSH.
 1. Run `docker compose down` to stop WISSH.
 
 You can also quit Docker Desktop to stop WISSH.
@@ -46,7 +47,6 @@ WISSH can also be built and run on your local machine for development.
 #### Development Build
 To run the development build of WISSH:
 1. Navigate into the WISSH folder.
-1. Open `compose.yaml`. Under `services`, `backend` and `frontend`, `build`, make sure `target` is set to `dev`.
 1. Navigate into the backend folder.
 1. Run `npm install`.
 1. Run `npm run dev`.
@@ -57,7 +57,6 @@ To run the development build of WISSH:
 #### Production Build
 To run the production build of WISSH:
 1. Navigate into the WISSH folder.
-1. Open `compose.yaml`. Under `services`, `backend` and `frontend`, `build`, make sure `target` is set to `prod`.
 1. Navigate into the backend folder.
 1. Run `npm install`.
 1. Run `node src/index.js`.
