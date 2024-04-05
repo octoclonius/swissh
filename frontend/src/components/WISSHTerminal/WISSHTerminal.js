@@ -4,7 +4,7 @@ import { FitAddon } from '@xterm/addon-fit';
 import { AttachAddon } from '@xterm/addon-attach';
 import '@xterm/xterm/css/xterm.css';
 
-const WISSHTerminal = () => {
+const WISSHTerminal = ({ termHeight }) => {
   const termRef = useRef(null);
 
   useEffect(() => {
@@ -23,6 +23,7 @@ const WISSHTerminal = () => {
       return () => {
         clearTimeout(timeoutID);
         timeoutID = setTimeout(() => {
+          term.height = termHeight;
           addonFit.fit();
           ws.send(JSON.stringify({ resize: { cols: term.cols, rows: term.rows } }));
         }, 100);
@@ -41,7 +42,7 @@ const WISSHTerminal = () => {
       addonFit.dispose();
       term.dispose();
     };
-  }, []);
+  }, [termHeight]);
 
   return <div ref={termRef} className='wissh-term'/>;
 }

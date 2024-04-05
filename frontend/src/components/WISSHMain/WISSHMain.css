@@ -1,16 +1,29 @@
 .wissh-main {
     height: 100%;
+    width: 100%;
     display: flex;
     flex-direction: column;
 }
 
 .file-container {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
+    flex: 1;
+    overflow-y: auto;
+}
+
+.gap {
+    height: 10px;
 }
 
 .wissh-term-container {
-    display: flex;
-    flex-direction: column;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.resize-handle {
+    position: absolute;
+    width: 100%;
+    height: 10px;
+    top: -10px;
+    background-color: #ccc;
+    cursor: row-resize;
 }
