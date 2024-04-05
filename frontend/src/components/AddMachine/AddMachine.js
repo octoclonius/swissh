@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import FileList from '../FileList/FileList';
-import './AddMachine.css'
+import { Link, useNavigate } from 'react-router-dom';
+import './AddMachine.css';
 
 const initialState = {
   host: '',
@@ -14,6 +13,8 @@ const AddMachine = () => {
   const [formState, setFormState] = useState(initialState);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  
+  const navigate = useNavigate();
 
   const onChangeHandler = e => {
     setFormState({
@@ -31,7 +32,7 @@ const AddMachine = () => {
     const controller = new AbortController();
     const timeoutID = setTimeout(() => controller.abort(), 3000);
     try {
-      const response = await fetch(`https://${window.location.hostname}:8000/auth`, {
+      const res = await fetch(`https://${window.location.hostname}:8000/auth`, {
         signal: controller.signal,
         method: 'POST',
         headers: {
@@ -40,13 +41,13 @@ const AddMachine = () => {
         body: JSON.stringify(formState),
       });
 
-      if (!response.ok) {
+      if (!res.ok) {
         throw new Error('Error: Failed to add machine');
       }
 
-      const responseData = await response.json();
-      localStorage.files = JSON.stringify(responseData);
-
+      const { sessionID } = await res.json();
+      localStorage.sessionID = sessionID;
+      navigate('/');
     } catch (e) {
       setError(`${e}`);
     } finally {
@@ -79,6 +80,7 @@ const AddMachine = () => {
             type='text'
             onChange={onChangeHandler}
             value={formState.username}
+            autoComplete='username'
             required
           />
           <br />
@@ -89,6 +91,7 @@ const AddMachine = () => {
             type='password'
             onChange={onChangeHandler}
             value={formState.password}
+            autoComplete='current-password'
           />
           {error ? <div className='error'>{error}</div> : <br />}
           <br />

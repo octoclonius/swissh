@@ -1,16 +1,16 @@
-let https;
-try {
-    https = require('node:https');
-} catch (err) {
-    console.error('https support is disabled!');
-}
+const crypto = require('node:crypto');
 const fs = require('node:fs');
+const https = require('node:https');
 const cors = require('cors');
 const express = require('express');
 const pty = require('node-pty');
 const { Client } = require('ssh2');
 const { WebSocketServer } = require('ws');
 const { getShell } = require('./getShell');
+
+/* Session IDs to machine credentials */
+const machines = {};
+const conn = new Client();
 
 const app = express();
 const port = 8000;
@@ -19,17 +19,29 @@ app.use(express.json());
 app.use(cors());
 
 app.post('/auth', (req, res) => {
-    const conn = new Client();
     conn.on('ready', () => {
-        conn.sftp((err, sftp) => {
+        const sessionID = crypto.randomUUID();
+        machines[sessionID] = {
+            conn: conn,
+            cred: req.body
+        };
+        res.send({ sessionID: sessionID });
+    }).connect(req.body);
+});
+
+app.post('/api/readdir', (req, res) => {
+    const { sessionID, path } = req.body;
+    if (machines[sessionID]) {
+        machines[sessionID].conn.sftp((err, sftp) => {
             if (err) throw err;
-            sftp.readdir('.', (err, list) => {
+            sftp.readdir(path, (err, list) => {
                 if (err) throw err;
-                res.send(list);
-                conn.end();
+                res.send(JSON.stringify(list));
             });
         });
-    }).connect(req.body);
+    } else {
+        res.send([]);
+    }
 });
 
 /* Handles terminal communication */
