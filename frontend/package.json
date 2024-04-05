@@ -17,10 +17,12 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "HOST=localhost SSL_CRT_FILE=../ssl/certs/certificate.pem SSL_KEY_FILE=../ssl/private/key.pem HTTPS=true react-scripts start",
+    "start": "react-scripts start",
     "docker-start": "SSL_CRT_FILE=../ssl/certs/certificate.pem SSL_KEY_FILE=../ssl/private/key.pem HTTPS=true react-scripts start",
-    "build": "SSL_CRT_FILE=../ssl/certs/certificate.pem SSL_KEY_FILE=../ssl/private/key.pem HTTPS=true react-scripts build",
+    "build": "react-scripts build",
+    "docker-build": "SSL_CRT_FILE=../ssl/certs/certificate.pem SSL_KEY_FILE=../ssl/private/key.pem HTTPS=true react-scripts build",
     "test": "react-scripts test",
+    "docker-test": "SSL_CRT_FILE=../ssl/certs/certificate.pem SSL_KEY_FILE=../ssl/private/key.pem HTTPS=true react-scripts test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
