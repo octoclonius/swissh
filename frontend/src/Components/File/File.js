@@ -1,9 +1,11 @@
 import React from 'react';
 
-const File = ({ filename }) => {
+const File = ({ file }) => {
+  const isDir = (file?.attrs?.mode & 0o040000) !== 0;
+
   return (
-    <div className='file'>
-      {filename}
+    <div className={isDir ? 'directory' : 'file'}>
+      {file.filename}{isDir ? '/' : ''}
     </div>
   );
 };

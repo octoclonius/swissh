@@ -37,9 +37,11 @@ app.post('/api/readdir', (req, res) => {
             sftp.readdir(path, (err, list) => {
                 if (err) throw err;
                 res.send(JSON.stringify(list));
+                sftp.end();
             });
         });
     } else {
+        res.ok = false;
         res.send([]);
     }
 });

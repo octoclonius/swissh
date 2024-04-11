@@ -46,7 +46,7 @@ const AddMachine = () => {
       }
 
       const { sessionID } = await res.json();
-      localStorage.sessionID = sessionID;
+      localStorage.setItem('sessionID', sessionID);
       navigate('/');
     } catch (e) {
       setError(`${e}`);

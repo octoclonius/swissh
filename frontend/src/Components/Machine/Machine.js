@@ -1,7 +1,7 @@
 import React from 'react';
 import './Machine.css';
 
-const Machine = ({ name, username }) => {
+const Machine = ({ name }) => {
   return (
     <div className='machine'>
       {name}

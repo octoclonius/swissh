@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import File from '../File/File';
+import './FileList.css';
 
 const FileList = () => {
   const [files, setFiles] = useState([]);
 
   useEffect(() => {
     async function fetchData() {
-      if (localStorage.sessionID) {
+      const sessionID = localStorage.getItem('sessionID');
+      if (sessionID !== null) {
         const controller = new AbortController();
         const timeoutID = setTimeout(() => controller.abort(), 3000);
         try {
@@ -17,7 +19,7 @@ const FileList = () => {
               'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-              sessionID: localStorage.sessionID,
+              sessionID: sessionID,
               path: '.'
             }),
           });
@@ -29,6 +31,8 @@ const FileList = () => {
           setFiles(await res.json());
         } catch (e) {
           console.warn(e);
+          localStorage.removeItem('sessionID');
+          setFiles([]);
         } finally {
           clearTimeout(timeoutID);
         }
@@ -45,7 +49,7 @@ const FileList = () => {
         {files?.map((file, index) => (
           <li key={index}>
             <File
-              filename={file.filename}
+              file={file}
             />
           </li>
         ))}

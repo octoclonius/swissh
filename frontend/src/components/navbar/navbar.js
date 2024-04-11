@@ -1,13 +1,29 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Outlet, Link } from 'react-router-dom';
+import MachineList from '../MachineList/MachineList';
 import './Navbar.css';
 
 const Navbar = () => {
+  const [sessionID, setSessionID] = useState('');
+
+  useEffect(() => {
+    const intervalID = setInterval(() => {
+      setSessionID(localStorage.getItem('sessionID'));
+    }, 1000);
+
+    return () => clearInterval(intervalID);
+  }, []);
+
   return (
     <div className='navbar'>
 
-      <div className='machine-list-outlet'>
-        <Outlet />
+      {/* Required for add-machine Link */}
+      <Outlet />
+
+      <div className='machine-list'>
+        <MachineList
+          machines={[sessionID] || []}
+        />
       </div>
 
       <nav>

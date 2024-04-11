@@ -9,8 +9,7 @@ const MachineList = ({ machines }) => {
         {machines.map((machine, index) => (
           <li key={index}>
             <Machine
-              name={machine.name}
-              username={machine.username}
+              name={machine}
             />
           </li>
         ))}
