@@ -28,7 +28,10 @@ const FileList = () => {
             throw new Error('Error: Failed to add machine');
           }
 
-          setFiles(await res.json());
+          setFiles((await res.json()).map(file => {
+            const isDir = (file?.attrs?.mode & 0o040000) !== 0;
+            return { ...file, isDir };
+          }));
         } catch (e) {
           console.warn(e);
           localStorage.removeItem('sessionID');
