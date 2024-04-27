@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
 import './AddMachine.css';
 
 const initialState = {
@@ -9,12 +8,10 @@ const initialState = {
   password: '',
 };
 
-const AddMachine = () => {
+const AddMachine = ({ _hostname, _sessionID, onCloseHandler }) => {
   const [formState, setFormState] = useState(initialState);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-  
-  const navigate = useNavigate();
 
   const onChangeHandler = e => {
     setFormState({
@@ -42,26 +39,27 @@ const AddMachine = () => {
       });
 
       if (!res.ok) {
-        throw new Error('Error: Failed to add machine');
+        throw res.error;
       }
 
-      const { sessionID } = await res.json();
-      localStorage.setItem('sessionID', sessionID);
-      navigate('/');
-    } catch (e) {
-      setError(`${e}`);
-    } finally {
+      const { hostname, sessionID } = await res.json();
+
       clearTimeout(timeoutID);
       setLoading(false);
+      onCloseHandler(hostname, sessionID);
+    } catch (e) {
+      clearTimeout(timeoutID);
+      setLoading(false);
+      setError(`${e}`);
     }
   };
 
   return (
     <div className='add-machine'>
       <div className='modal-content'>
-        <Link to='/' className='close'>
+        <div className='close' onClick={() => { onCloseHandler(_hostname, _sessionID) }}>
           &times;
-        </Link>
+        </div>
         <form action='/auth' method='POST' onSubmit={onSubmitHandler}>
           <label htmlFor='host'>Host: </label>
           <input
@@ -70,6 +68,7 @@ const AddMachine = () => {
             type='text'
             onChange={onChangeHandler}
             value={formState.host}
+            autoComplete='on'
             required
           />
           <br />

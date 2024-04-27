@@ -5,7 +5,7 @@ import WISSHTerminal from '../WISSHTerminal/WISSHTerminal';
 import './WISSHMain.css';
 import 'react-resizable/css/styles.css';
 
-const WISSHMain = () => {
+const WISSHMain = ({ sessionID }) => {
   const [height, setHeight] = useState(408);
 
   const handleResize = (e, { size }) => {
@@ -16,7 +16,9 @@ const WISSHMain = () => {
     <div className='wissh-main'>
 
       <div className='file-container'>
-        <FileList />
+        <FileList
+          sessionID={sessionID}
+        />
       </div>
 
       <span className='gap' />

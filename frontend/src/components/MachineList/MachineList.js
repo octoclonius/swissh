@@ -9,7 +9,7 @@ const MachineList = ({ machines }) => {
         {machines.map((machine, index) => (
           <li key={index}>
             <Machine
-              name={machine}
+              name={machine.hostname}
             />
           </li>
         ))}

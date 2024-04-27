@@ -3,8 +3,10 @@ import './File.css';
 
 const File = ({ file }) => {
   return (
-    <div className={file.isDir ? 'directory' : 'file'}>
-      {file.filename}{file.isDir ? '/' : ''}
+    <div className='file'>
+      <tt>
+        {file.filename}
+      </tt>
     </div>
   );
 };

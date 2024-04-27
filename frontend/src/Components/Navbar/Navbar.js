@@ -1,40 +1,46 @@
-import React, { useState, useEffect } from 'react';
-import { Outlet, Link } from 'react-router-dom';
+import React, { useState } from 'react';
 import MachineList from '../MachineList/MachineList';
+import AddMachine from '../AddMachine/AddMachine';
 import './Navbar.css';
 
-const Navbar = () => {
-  const [sessionID, setSessionID] = useState('');
-
-  useEffect(() => {
-    const intervalID = setInterval(() => {
-      setSessionID(localStorage.getItem('sessionID'));
-    }, 1000);
-
-    return () => clearInterval(intervalID);
-  }, []);
+const Navbar = ({ sessionID, setSessionID }) => {
+  const [hostname, setHostname] = useState(null);
+  const [addMachineVisible, setAddMachineVisible] = useState(false);
 
   return (
     <div className='navbar'>
-
-      {/* Required for add-machine Link */}
-      <Outlet />
+      {
+        addMachineVisible
+        &&
+        <AddMachine
+          _hostname={hostname}
+          _sessionID={sessionID}
+          onCloseHandler={(_hostname, _sessionID) => {
+            setAddMachineVisible(false);
+            setHostname(_hostname);
+            setSessionID(_sessionID);
+          }}
+        />
+      }
 
       <div className='machine-list'>
         <MachineList
-          machines={[sessionID] || []}
+          machines={[{
+            hostname: hostname,
+            sessionID: sessionID
+          }]}
         />
       </div>
 
       <nav>
         <hr />
-        <Link to='/add-machine' className='nav-link'>
+        <span className='nav-link' onClick={() => { setAddMachineVisible(true) }}>
           Add Machine
-        </Link>
+        </span>
         <hr />
-        <Link to='/' className='home'>
+        <span className='home'>
           <img src='/logo.png' alt='logoImage' className='logo' />
-        </Link>
+        </span>
       </nav>
       
     </div>

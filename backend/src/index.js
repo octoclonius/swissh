@@ -3,6 +3,8 @@ const fs = require('node:fs');
 const https = require('node:https');
 const cors = require('cors');
 const express = require('express');
+const { rateLimit } = require('express-rate-limit');
+const helmet = require('helmet');
 const pty = require('node-pty');
 const { Client } = require('ssh2');
 const { WebSocketServer } = require('ws');
@@ -15,17 +17,26 @@ const conn = new Client();
 const app = express();
 const port = 8000;
 
-app.use(express.json());
 app.use(cors());
+app.use(express.json());
+app.use(helmet());
+app.use(rateLimit({
+    windowMs: 1000,
+    max: 4
+}));
 
 app.post('/auth', (req, res) => {
+    conn.on('error', (e) => {
+        res.status(401).send({ error: e });
+    });
+
     conn.on('ready', () => {
         const sessionID = crypto.randomUUID();
         machines[sessionID] = {
             conn: conn,
             cred: req.body
         };
-        res.send({ sessionID: sessionID });
+        res.send({ hostname: conn.config.host, sessionID: sessionID });
     }).connect(req.body);
 });
 
@@ -33,9 +44,18 @@ app.post('/api/readdir', (req, res) => {
     const { sessionID, path } = req.body;
     if (machines[sessionID]) {
         machines[sessionID].conn.sftp((err, sftp) => {
-            if (err) throw err;
-            sftp.readdir(path, (err, list) => {
-                if (err) throw err;
+            if (err) {
+                res.ok = false;
+                res.status(500).send({ error: err });
+                return;
+            }
+            sftp.readdir(path, { full: true },  (err, list) => {
+                if (err) {
+                    res.ok = false;
+                    res.status(500).send({ error: err });
+                    sftp.end();
+                    return;
+                }
                 res.send(JSON.stringify(list));
                 sftp.end();
             });

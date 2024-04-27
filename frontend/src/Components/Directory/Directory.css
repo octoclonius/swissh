@@ -1,0 +1,9 @@
+.directory {
+    color: blue;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.directory:hover {
+    text-decoration: underline;
+}
