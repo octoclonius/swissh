@@ -1,0 +1,4 @@
+.file-icon::before {
+	content: '\1F4C4';
+    margin-right: 5px;
+}

@@ -4,9 +4,11 @@ import './File.css';
 const File = ({ file }) => {
   return (
     <div className='file'>
-      <tt>
-        {file.filename}
-      </tt>
+      <span class='file-icon'>
+        <tt>
+          {file.filename}
+        </tt>
+      </span>
     </div>
   );
 };

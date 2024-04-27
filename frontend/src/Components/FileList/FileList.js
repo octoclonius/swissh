@@ -72,7 +72,7 @@ const FileList = ({ sessionID }) => {
   return (
     <div className='files'>
       {files &&
-      <ul>
+      <ul className='file-list'>
         {files?.map((file, index) => (
           file.isDir ?
           <li key={index}>

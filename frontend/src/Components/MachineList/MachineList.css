@@ -1,6 +1,7 @@
 .machine-list ul {
     margin: 0px;
     padding-left: 10px;
+    padding-right: 10px;
     padding-top: 10px;
     list-style-type: none;
     overflow-x: auto;

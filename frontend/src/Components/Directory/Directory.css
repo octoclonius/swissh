@@ -1,9 +1,14 @@
-.directory {
+.directory-icon::before {
+    content: '\1F4C1';
+    margin-right: 5px;
+}
+
+.directory-text {
     color: blue;
     text-decoration: none;
     cursor: pointer;
 }
 
-.directory:hover {
+.directory-text:hover {
     text-decoration: underline;
 }

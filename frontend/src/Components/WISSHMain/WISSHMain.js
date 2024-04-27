@@ -6,7 +6,7 @@ import './WISSHMain.css';
 import 'react-resizable/css/styles.css';
 
 const WISSHMain = ({ sessionID }) => {
-  const [height, setHeight] = useState(408);
+  const [height, setHeight] = useState(200);
 
   const handleResize = (e, { size }) => {
     setHeight(size.height);
