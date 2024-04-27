@@ -4,7 +4,7 @@ import './Directory.css';
 const Directory = ({ file, cwd, inCb, outCb }) => {
   return (
     <div className='directory'>
-      <span class='directory-icon'></span>
+      <span class='directory-icon' />
       <tt className='directory-text'
         onClick={() => {
           if (file.filename === '..') {

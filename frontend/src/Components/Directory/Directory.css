@@ -1,6 +1,6 @@
 .directory-icon::before {
     content: '\1F4C1';
-    margin-right: 5px;
+    margin-right: 10px;
 }
 
 .directory-text {
